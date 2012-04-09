@@ -7,6 +7,8 @@ DEB_ROOT=$(CURDIR)/debian/
 DESTPATH=$(DEB_ROOT)$(PRODUCT)/$(PRODUCT_ROOT)
 SHARED_CONFIG=$(CURDIR)/debian/hs-config/etc/hs/shared
 
+BUNDLE=ruby1.9.1 -S bundle
+
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
@@ -17,15 +19,15 @@ override_dh_clean:
 	dh_clean
 
 prepare_product:
-	/var/lib/gems/1.9.1/bin/bundle install --path=bundled --binstubs
+	$(BUNDLE) install --path=bundled --binstubs
 
 run_test: prepare_product
 # prepare test setups
 	cp config/database.yml.test config/database.yml
 	cp config/hs.yml.template config/hs.yml
-	RAILS_ENV=development /var/lib/gems/1.9.1/bin/bundle exec rake ciprep
-	RAILS_ENV=test /var/lib/gems/1.9.1/bin/bundle exec rake ciprep
-	RAILS_ENV=development /var/lib/gems/1.9.1/bin/bundle exec rake cirun || true
+	RAILS_ENV=development $(BUNDLE) exec rake ciprep || true
+	RAILS_ENV=test $(BUNDLE) exec rake ciprep || true
+	RAILS_ENV=development $(BUNDLE) exec rake cirun || true
 
 override_dh_auto_install: prepare_product run_test
 # product files

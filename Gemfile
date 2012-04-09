@@ -8,7 +8,7 @@ gem 'symbolize'
 gem 'redis'
 gem 'redis-namespace'
 gem 'resque', '>= 1.17.1'
-gem 'resque-status', :git => 'git://github.com/zeha/resque-status.git' # Forked because of web interface fixes
+gem 'resque-status', :git => 'git://github.com/hostingstack/resque-status.git' # Forked because of web interface fixes
 gem 'haddock'
 gem 'net-dns'
 gem 'uuid'

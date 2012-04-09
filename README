@@ -1,0 +1,12 @@
+
+Ruote Worker
+------------
+
+rake ruote:run_worker
+
+Ruote Resque Backchannel Worker
+-------------------------------
+
+rake ruote:run_rrs_worker
+
+

@@ -1,0 +1,56 @@
+#! /bin/bash
+
+set -e
+
+# source debconf stuff
+. /usr/share/debconf/confmodule
+# source dbpostinst-common shell library, and call the hook function
+if [ -f /usr/share/dbconfig-common/dpkg/postinst.pgsql ]; then
+  . /usr/share/dbconfig-common/dpkg/postinst.pgsql
+  dbc_go hs-cloudcontroller $@
+fi
+
+prevver="$2"
+
+fixperms() {
+  dpkg-statoverride --list /var/log/hs-cloudcontroller >/dev/null || \
+    dpkg-statoverride --update --add hscc root 0750 /var/log/hs-cloudcontroller
+  dpkg-statoverride --list /var/lib/hs/cloudcontroller/run >/dev/null || \
+    dpkg-statoverride --update --add hscc www-data 0750 /var/lib/hs/cloudcontroller/run
+}
+
+write_db_config() {
+  dbconfig-generate-include -o template_infile=/usr/lib/hs/cloudcontroller/config/database.yml.template \
+    -f template /etc/dbconfig-common/hs-cloudcontroller.conf /etc/hs/cloudcontroller/database.yml
+  chown hscc: /etc/hs/cloudcontroller/database.yml
+  chmod 0600 /etc/hs/cloudcontroller/database.yml
+  . /etc/dbconfig-common/hs-cloudcontroller.conf
+  IS_FIRST_INSTALL=$(echo select \'NO\' from pg_class, pg_user where \
+    relowner=usesysid and usename=\'hscloudcontroller\' | PGPASSWORD=$dbc_dbpass psql \
+    -U $dbc_dbuser $dbc_dbname -h localhost -t)
+  if [ -z "$IS_FIRST_INSTALL" ]; then
+    echo "Seeding database..."
+    # This needs to run as the correct user since it creates the rails logfile
+    cd /usr/lib/hs/cloudcontroller && su hscc -s /bin/sh -c "RAILS_ENV=production ./bin/rake db:setup"
+  fi
+  echo "hs-cloudcontroller: checking for pending database migrations..."
+  cd /usr/lib/hs/cloudcontroller && su hscc -s /bin/sh -c "RAILS_ENV=production ./bin/rake db:abort_if_pending_migrations" || true
+}
+
+case "$1" in
+	configure)
+		adduser --system --quiet --no-create-home hscc
+		fixperms
+		write_db_config
+		ln -s /etc/nginx/sites-available/hs-cloudcontroller-site /etc/nginx/sites-enabled || true
+		;;
+	abort-upgrade|abort-deconfigure|abort-remove)
+		:
+		;;
+	*)
+		echo "Called with unknown argument $1, bailing out."
+		exit 1
+		;;
+esac
+
+#DEBHELPER#

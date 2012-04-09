@@ -1,0 +1,17 @@
+%h1
+  Editing
+  = @service.name
+
+%p
+  This info text will show up in the End User facing interface.
+
+%br>
+
+= form_for @service, :as => :service, :url => service_path(@service), :method=>:PUT do |f|
+  = f.label :info
+  = f.text_area :info
+  %br>
+  = f.submit
+
+%br>
+<a href="/">back</a>

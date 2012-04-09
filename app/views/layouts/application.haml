@@ -1,0 +1,45 @@
+!!! 5
+%html
+  %head
+    %title= 'Administration Dashboard - %s' % ConfigSetting['cloud.domain.name']
+    = stylesheet_link_tag :all
+    = javascript_include_tag :defaults
+    -#= javascript_include_tag 'jquery-ext'
+    = javascript_include_tag 'jquery.sparkline'
+    = csrf_meta_tag
+  %body{:class => body_classes}
+    .head
+      %h1 Administration Dashboard
+      %h2
+        Cloud:
+        %strong= ConfigSetting['cloud.domain.name']
+        - if current_user
+          &mdash; Logged in as:
+          %strong
+            = current_user.name
+      .info
+        .storage
+          -#%img{:src => "/images/24-shield-green.png"}
+          -#%p
+            All data is N+1 redundant.
+            %br
+            Offsite backup is active.
+    .navigation
+      - if current_user
+        %ul
+          %li.overview= navigation_link_to 'Overview', root_path
+          %li.settings= navigation_link_to 'Cloud Config', cloudconfig_index_path
+          %li.settings= navigation_link_to 'Ruote', '/_ruote/'
+          %li.settings= navigation_link_to 'Resque', '/resque/'
+          %li.logout= navigation_link_to 'Logout', destroy_user_session_path
+    .content-container
+      .content
+        - if notice
+          %p.notice
+            = notice
+        - if alert          
+          %p.alert
+            = alert
+        = yield
+    .footer
+      &copy; 2011 Efficient Cloud Ltd. All rights reserved.

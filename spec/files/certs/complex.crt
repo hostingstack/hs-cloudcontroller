@@ -1,0 +1,55 @@
+Certificate:
+    Data:
+        Version: 1 (0x0)
+        Serial Number: 3 (0x3)
+        Signature Algorithm: md5WithRSAEncryption
+        Issuer: O=Test Dev Organization, L=Provo, ST=Utah
+        Validity
+            Not Before: Dec 14 03:26:33 2011 GMT
+            Not After : Dec 11 03:26:33 2021 GMT
+        Subject: ST=Utah, O=Test Dev Organization, CN=example.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:ce:2b:97:47:fc:98:83:09:0d:8f:9f:25:18:b0:
+                    fb:8f:82:7e:6e:00:e5:dc:4c:e5:3a:07:5c:d0:fb:
+                    c7:c2:8e:c4:ab:a8:d3:93:3c:8b:23:a4:cb:7f:71:
+                    89:7b:15:33:21:d2:08:88:e7:43:68:b4:7f:f2:cf:
+                    3d:c9:6c:6a:a9:ef:d9:d5:92:d8:c5:e8:ef:b9:98:
+                    b6:10:d5:ed:09:87:33:fb:75:5e:c2:4a:02:01:3b:
+                    e5:26:ab:c7:0f:ee:db:15:11:9d:00:fe:9e:3a:06:
+                    90:99:f2:e8:3b:fc:1d:0a:75:4e:f0:e9:17:ed:cd:
+                    11:ce:36:6e:83:68:42:48:a9
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Key Usage: 
+                Digital Signature, Non Repudiation, Key Encipherment
+            X509v3 Subject Alternative Name: 
+                DNS:example1.com, DNS:example2.com, DNS:*.example.com
+    Signature Algorithm: md5WithRSAEncryption
+        2e:36:76:6e:c4:d3:71:24:92:88:84:43:01:e6:22:07:af:20:
+        89:6c:d5:39:79:ba:28:f7:0e:55:cc:59:f4:23:da:05:33:6b:
+        ae:a0:1e:05:8d:88:fc:13:48:ed:85:fd:4b:2f:77:de:45:98:
+        dc:77:80:3c:16:70:07:10:45:14:5f:f4:a9:c4:da:14:65:e6:
+        da:71:3e:57:f5:37:d6:65:19:7f:5c:63:54:2c:78:9e:3e:a3:
+        a9:01:45:49:17:fd:a9:ac:c7:b1:56:17:61:6f:c4:bd:cd:fe:
+        d2:a1:85:e4:9f:43:c0:db:f3:7c:4a:46:23:31:ff:9c:2d:7c:
+        11:f6
+-----BEGIN CERTIFICATE-----
+MIICRTCCAa4CAQMwDQYJKoZIhvcNAQEEBQAwPzEeMBwGA1UEChMVVGVzdCBEZXYg
+T3JnYW5pemF0aW9uMQ4wDAYDVQQHEwVQcm92bzENMAsGA1UECBMEVXRhaDAeFw0x
+MTEyMTQwMzI2MzNaFw0yMTEyMTEwMzI2MzNaMEUxDTALBgNVBAgTBFV0YWgxHjAc
+BgNVBAoTFVRlc3QgRGV2IE9yZ2FuaXphdGlvbjEUMBIGA1UEAxMLZXhhbXBsZS5j
+b20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAM4rl0f8mIMJDY+fJRiw+4+C
+fm4A5dxM5ToHXND7x8KOxKuo05M8iyOky39xiXsVMyHSCIjnQ2i0f/LPPclsaqnv
+2dWS2MXo77mYthDV7QmHM/t1XsJKAgE75Sarxw/u2xURnQD+njoGkJny6Dv8HQp1
+TvDpF+3NEc42boNoQkipAgMBAAGjUDBOMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXg
+MDQGA1UdEQQtMCuCDGV4YW1wbGUxLmNvbYIMZXhhbXBsZTIuY29tgg0qLmV4YW1w
+bGUuY29tMA0GCSqGSIb3DQEBBAUAA4GBAC42dm7E03EkkoiEQwHmIgevIIls1Tl5
+uij3DlXMWfQj2gUza66gHgWNiPwTSO2F/Usvd95FmNx3gDwWcAcQRRRf9KnE2hRl
+5tpxPlf1N9ZlGX9cY1QseJ4+o6kBRUkX/amsx7FWF2FvxL3N/tKhheSfQ8Db83xK
+RiMx/5wtfBH2
+-----END CERTIFICATE-----

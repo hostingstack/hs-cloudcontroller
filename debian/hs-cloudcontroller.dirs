@@ -1,0 +1,3 @@
+var/log/hs-cloudcontroller
+var/lib/hs/cloudcontroller/run
+etc/hs/cloudcontroller

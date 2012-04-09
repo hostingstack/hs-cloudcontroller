@@ -1,0 +1,6 @@
+#!/bin/sh
+echo starting
+export RAILS_ENV=production
+cd /usr/lib/hs/cloudcontroller
+exec 2>&1
+exec setuidgid hscc stdbuf -o0 -e0 ./bin/unicorn -c ./config/unicorn.rb

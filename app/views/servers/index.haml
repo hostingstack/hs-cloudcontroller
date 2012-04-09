@@ -1,0 +1,37 @@
+- already_shown = [] # To avoid duplicate servers on a one-box install
+- @servers.each do |server|
+  - next if already_shown.include?(server.name)
+  - already_shown << server.name
+  .server.box{:id => ['Server', server.id]}
+    - if server.state == :active
+      %h3
+        = server.name
+        %span.capacity>
+          Loading
+      %div.content
+        %span.ramgraph>
+          \.
+        RAM usage:&nbsp;
+        %span.ram>
+          %strong> Loading
+        %br
+        %span.services>
+          = server.services.length
+          services active:
+          %ul.services>
+            - server.services.each do |service|
+              %li.service{:title => "info text: #{service.info or 'empty'}"}>
+                = service.class.unqualified_name
+                %span.editinfo
+                  = link_to 'edit info', service_path(service)
+    - else
+      %h3
+        = server.name
+      %p.error.content
+        This server is currently offline.
+
+%br{:clear => :all}
+
+%script
+  $(document).ready(function() { ec.get_servers(); }); 
+

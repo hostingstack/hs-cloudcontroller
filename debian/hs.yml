@@ -1,0 +1,10 @@
+production:
+  cc_api_host: http://cc.example.org
+  cc_api_user: user
+  cc_api_password: pass
+  codemanager_host: http://admin.example.org:9200
+  billing_api_user: user
+  billing_api_password: pass
+  agent_api_user: agentuser
+  agent_api_password: agentpass
+  redis: 127.0.0.1:6379

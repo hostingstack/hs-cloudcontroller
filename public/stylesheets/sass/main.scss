@@ -1,0 +1,216 @@
+body, html {
+  background-color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+strong {
+	font-weight: bold;
+}
+a {
+	color: #000;
+}
+
+.head {
+	border-bottom: 1px solid #888;
+	padding: 9px 0 0 21px;
+	height: 45px;
+	overflow: hidden;
+	background: url('/images/head_bg.png') repeat-x;
+	position: relative;
+	
+	h1, h2 {
+		float: left;
+		clear: left;
+		width: 50%;
+	}
+	h1 {
+		font-size: 131%;
+		font-weight: bold;
+		letter-spacing: 0.05em;
+		color: #222;
+	}
+	h2 {
+		font-size: 85%;
+		color: #666;
+		margin-top: 2px;
+		margin-left: 1px;
+	}
+	.info .storage {
+		position: absolute;
+		overflow: hidden;
+		width: 16em;
+		top: 14px;
+		right: 5px;
+		
+		img {
+			float: left;
+			width: 24px;
+			margin-right: 10px;
+		}
+		p {
+			float: left;
+			font-size: 85%;
+			line-height: 1.2em;
+			color: #555;
+			letter-spacing: 0.02em;
+		}
+	}
+}
+
+.navigation {
+	position: absolute;
+	top: 75px;
+	left: 0px;
+	font-size: 100%;
+	letter-spacing: 0.03em;
+	
+	li {
+		margin-bottom: 5px;
+		background-color: #eee;
+		
+		a {
+			text-decoration: none;
+			border: 1px solid #ccc;
+			border-right: 5px solid #ccc;
+			border-left: none;
+			width: 100px;
+			padding: 4px 0 4px 44px;
+			display: block;
+			-moz-border-radius-topright: 5px;
+			-moz-border-radius-bottomright: 5px;
+		}
+		a.current, a:hover {
+			font-weight: bold;
+			border-color: #999;
+		}
+	}
+	li.overview { background: url('/images/16-quickview.png') no-repeat 20px 6px #eee; }
+	li.appliances { background: url('/images/16-module-green.png') no-repeat 20px center #eee; }
+	li.system-log { background: url('/images/16-book.png') no-repeat 20px center #eee; }
+	li.settings { background: url('/images/16-settings.png') no-repeat 20px center #eee; }
+	li.logout { background: url('/images/16-lightbulb-off.png') no-repeat 20px center #eee; }
+}
+.content-container {
+	margin-left: 200px;
+	margin-top: 20px;
+}
+.footer {
+	color: #555;
+	font-size: 85%;
+	text-align: center;
+	margin-top: 1em;
+}
+
+.servers.index {
+	.content {
+		overflow: hidden;
+		.box {
+			width: 280px;
+			min-height: 120px;
+			border: 1px solid #444444;
+			float: left;
+			-moz-box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+			-moz-border-radius: 6px;
+			margin-right: 15px;
+			margin-bottom: 15px;
+			position: relative;
+		  
+		  h3 {
+		    font-weight: bold;
+		    padding: 2px 7px 3px;
+		    border-bottom: 1px solid #888;
+		    position: relative;
+		    background-color: #eee;
+  			-moz-border-radius-topright: 6px;
+  			-moz-border-radius-topleft: 6px;
+		    
+		    .capacity {
+		      position: absolute;
+		      right: 4px;
+		      top: 4px;
+		      font-weight: normal;
+		      font-size: 85%;
+	      }
+	    }
+	    
+	    .content {
+	      margin-top: 7px;
+	      margin-left: 7px;
+	      line-height: 1.5em;
+
+	      .ramgraph, .loadgraph {
+	        position: absolute;
+	        display: block;
+	        right: 0;
+	      }
+	    }
+	    .error {
+	      color: red;
+	      text-align: center;
+	      margin: 2em 0 0 0;
+	    }
+		  
+			.quicknav {
+				overflow: hidden;
+			
+				li {
+					float: left;
+					margin-right: 3px;
+				}
+			}
+			li.service {
+			  font-size:
+			    0.85em;
+			  padding-left: 1em;
+                          .editinfo {
+                            display: none;
+                          }
+                          &:hover .editinfo {
+                            display: inline;
+                          }
+			}
+		}
+	}
+}
+
+.cloud_config {
+  width: 100%;
+  th,td { padding: 3px 3px 3px 3px; }
+  th { padding-right: 10px; }
+  th { font-weight: bold; }
+
+  tr:nth-child(2n+1)   { background-color:#eee; }
+
+}
+
+.content {
+h1, h2 {
+    font-weight: bold;
+}
+h1 { font-size: 160%; padding-bottom: 1em; }
+h2 { font-size: 130%; padding-bottom: 0.8em; }
+}
+
+.alert, .notice {
+  padding: 1em 1em 1em 1em;
+  width: 90%;
+  margin-bottom: 1em;
+}
+.alert {
+  border: 1px solid red;
+  background: #fc3;
+}
+.notice {
+  border: 1px solid green;
+  background: #cf3;
+}
+
+label {
+  padding-right: 1em;
+  vertical-align: top;
+}
+textarea {
+  padding: 2px;
+}

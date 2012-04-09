@@ -1,0 +1,4 @@
+var/log/hs-cloudcontroller usr/lib/hs/cloudcontroller/log
+var/lib/hs/cloudcontroller/run usr/lib/hs/cloudcontroller/run
+etc/hs/shared/hs.yml usr/lib/hs/cloudcontroller/config/hs.yml
+etc/hs/cloudcontroller/database.yml usr/lib/hs/cloudcontroller/config/database.yml

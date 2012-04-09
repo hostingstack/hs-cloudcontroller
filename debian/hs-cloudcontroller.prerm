@@ -1,0 +1,11 @@
+#! /bin/sh
+
+# source debconf stuff
+. /usr/share/debconf/confmodule
+# source dbconfig-common shell library, and call the hook function
+if [ -f /usr/share/dbconfig-common/dpkg/prerm.pgsql ]; then
+  . /usr/share/dbconfig-common/dpkg/prerm.pgsql
+  dbc_go hs-cloudcontroller $@
+fi
+
+rm -f /etc/nginx/sites-enabled/hs-cloudcontroller-site || echo "Failed to disable nginx hs-cloudcontroller-site"

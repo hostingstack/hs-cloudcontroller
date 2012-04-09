@@ -1,0 +1,20 @@
+Source: hs-cloudcontroller
+Section: net
+Priority: extra
+Maintainer: HostingStack Maintainers <maintainers@hostingstack.org>
+Build-Depends: debhelper (>= 7.0.50~), rsync, libpq-dev, git-core, ruby1.9.1-full, ruby1.9.1-dev, hs-runtime-rubygems1.9.1, rubygem1.9-bundler, ssh, wamerican | wordlist, redis-server
+Standards-Version: 3.9.2
+Origin: HostingStack
+
+Package: hs-cloudcontroller
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ruby1.9.1-full, hs-runtime-rubygems1.9.1, rubygem1.9-bundler, wamerican-huge | wordlist, postgresql (>= 9.0), dbconfig-common, hs-config, nginx
+Recommends: daemontools, daemontools-run
+Description: HostingStack Cloud Controller
+  The Cloud Controller itself.
+
+Package: hs-config
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: HostingStack Configuration files
+  Shared configuration files.

@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby1.9.1
+# -*- mode: ruby -*-
+require File.expand_path('../../config/application', __FILE__)
+
+Rails.application.require_environment!
+engine = Ruote::Engine.new(Ruote::Worker.new(Ruote::HashStorage.new()))
+engine.noisy = true
+require Rails.root.to_s + '/lib/ruote_participants'
+engine.register_participant 'select_apphosts', CloudControllerAppHostSelectionParticipant
+engine.register_participant 'envroot_deployer', HSAgentDeployAppParticipant
+
+engine.register_participant :dbg do |workitem|
+  puts "#{workitem.param_text}"
+  puts "#{workitem.params["host"]}"
+  puts workitem.fields.inspect
+end
+
+pdef = Ruote.process_definition do
+  select_apphosts
+  dbg :host => '${primary_app_host}'
+  concurrent_iterator :on_field => 'other_app_hosts' do
+    sequence do
+      dbg 'iterate...', :host => '${v:i}'
+    end
+  end
+end
+f = {:job_token => '27fa7660ddfc012eeff7782bcb1cd57c'}
+wfid = engine.launch pdef, f, f
+engine.wait_for(wfid)
+raise "process not over" if engine.process(wfid)
+

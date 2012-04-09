@@ -1,0 +1,138 @@
+#!/usr/bin/env ruby1.9.1
+
+if ARGV.length!=2
+  puts "#{__FILE__} start_of_url docfolder"
+  exit -1
+end
+
+start_of_url = ARGV[0]
+docfolder = ARGV[1]
+begin
+  Dir.mkdir docfolder
+rescue Errno::EEXIST => e
+  puts 'docfolder exists - do you  really want to do this? (y/N)'
+  if STDIN.gets.strip.downcase != 'y'
+    exit -2
+  end
+end
+
+def backtrack_inlinedoc(lines, lineno)
+  inlinedoc = []
+  while lines[lineno] =~ /^\s*##.*/
+    inlinedoc.insert(0,lines[lineno].gsub(/^\s*##( .*)$/,'\1').strip)
+    lineno-=1
+  end
+  inlinedoc
+end
+
+def parse_inlinedoc(lines)
+  namespace = {}
+  lines.each { |l|
+    l = l.strip
+    if l =~ /^@(\w+) (.*)$/
+      namespace[$1] = $2
+    else
+      namespace[nil] ||= []
+      namespace[nil].push l
+    end
+  }
+  namespace
+end
+
+
+inlinedoc_template = ERB.new <<FIN
+API documentation
+
+
+Our documentation, generally, is made to be consumed with ActiveResource, usually using XML.
+See https://github.com/rails/rails/tree/master/activeresource for documentation on the default interfaces.
+
+
+Note: app_id is always alphanumeric, in the format verb-noun-id
+
+The resources we offer and their corresponding methods are:
+
+
+
+<% models.each do |k,m| %>
+Resource: <%= m[:name] %><% if m[:doc] %>
+<%= m[:doc] %><% end %><% if m[:scopes].length>0 %>
+Filter by:<% m[:scopes].each do |scope| %>
+  <%= scope %><% end %><% end %>
+
+  <% (m[:columns] or []).each do |c| %>
+<%= "%8s  %s" % [c[1],c[0]] %> <% end %>
+
+  <% (m[:controllers] or {}).each do |c, as| %>
+   <% as.each do |a| %> 
+    <%= "%6s  %s" % [a[:method],a[:path]] %><% if a[:inlinedoc] %>
+    <%= (a[:inlinedoc][nil] || []).map{|x| "\t   "+x}.join("\n")  %><% end %><% end %>
+  <% end %>
+<% end %>
+FIN
+
+models = {}
+
+Rails.application.require_environment!
+dispatcher = ActionDispatch::Routing::RouteSet::Dispatcher.new
+relevant_routes = Rails.application.routes.routes.select{|x| x.path.starts_with? start_of_url}
+routes_with_controllers = relevant_routes.map{|r| [r, dispatcher.controller(r.defaults)]}
+routes_with_controllers.each do |x,y|
+  method = x.verb
+  controller_klass = y
+  action = x.defaults[:action]
+  has_action = y.new.respond_to?(x.defaults[:action].to_s)
+  action_method = y.new.method(x.defaults[:action].to_s) if has_action
+  action_method_location = action_method.source_location if action_method
+  inlinedoc = []
+  class_inlinedoc = []
+
+  controller_file = y.controller_path+'_controller.rb'
+
+  controller_file = 'app/controllers/' + controller_file
+
+  if action_method_location
+    lines = File.open(controller_file).readlines
+    
+    class_line = nil
+    lines.each_with_index do |l,i|
+      if l =~ /^\s*class .*/ and  class_line==nil
+        class_line = i 
+      end
+    end
+    class_inlinedoc = backtrack_inlinedoc(lines, class_line-1) if class_line
+    class_inlinedoc = parse_inlinedoc(class_inlinedoc)
+    
+    
+    lines = File.open(action_method_location[0]).readlines
+    
+    inlinedoc = backtrack_inlinedoc(lines,
+                                    action_method_location[1]-2) # -1 is header; 0 is first statement
+    inlinedoc = parse_inlinedoc(inlinedoc)
+
+    scopes = {}
+    if y.new.respond_to? 'scopes_configuration'
+      scopes = y.new.scopes_configuration || {}
+    end
+    scopes = scopes.values.map{|x| x[:as].to_s}
+    if class_inlinedoc.has_key? 'model'
+      model_klass = class_inlinedoc['model'].constantize
+    else
+      model_klass = controller_klass.send(:public, *controller_klass.protected_instance_methods).resource_class rescue nil
+    end
+    model_columns = model_klass.columns_hash.values.map{|x| [x.name, x.type] } if model_klass
+    
+    models[model_klass.to_s] ||= {:name => model_klass.to_s, :klass => model_klass, :columns => model_columns, :controllers => {}, :doc => (class_inlinedoc[nil] || []).join("\n"), :scopes => scopes }
+    models[model_klass.to_s][:controllers][controller_klass.to_s] ||= []
+    models[model_klass.to_s][:controllers][controller_klass.to_s] << {:method => method, :action => action, :path => x.path, :inlinedoc => inlinedoc}
+  else
+     puts "#{controller_klass}, #{action}, no action method locaton"
+  end
+end
+
+documentation =  inlinedoc_template.result({'models' => models}.send(:binding))
+
+if documentation
+  File.open(docfolder+'/doc.txt','w').write(documentation)
+end
+

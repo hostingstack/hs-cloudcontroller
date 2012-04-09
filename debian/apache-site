@@ -1,0 +1,9 @@
+Listen 9000
+<VirtualHost *:9000>
+	ServerName hs-cc
+	DocumentRoot /usr/lib/hs/cloudcontroller/public
+	PassengerUser hscc
+	PassengerGroup nogroup
+	PassengerMinInstances 2
+	PassengerPreStart http://localhost:9000/
+</VirtualHost>

@@ -1,0 +1,41 @@
+##
+## If you modify this, also update
+## debian/hs.yml
+##
+
+defaults: &defaults
+  cc_api_host : http://localhost:9000
+  cc_api_user: CHANGEME
+  cc_api_password: CHANGEME
+  codemanager_host : http://localhost:9200
+  billing_api_user: CHANGEME
+  billing_api_password: CHANGEME
+  agent_api_user: CHANGEME
+  agent_api_password: CHANGEME
+  redis: 127.0.0.1:6379
+
+production:
+  cc_api_host: http://admin.example.org
+  cc_api_user: user
+  cc_api_password: pass
+  codemanager_host : http://admin.example.org:9200
+  billing_api_user: CHANGEME
+  billing_api_password: CHANGEME
+  agent_api_user: CHANGEME
+  agent_api_password: CHANGEME
+  redis: 127.0.0.1:6379
+
+test:
+  cc_api_host: http://localhost:8080
+  cc_api_user: user
+  cc_api_password: pass
+  codemanager_host : http://localhost:9200
+  billing_api_user: demo@hostingstack.org
+  billing_api_password: CHANGEME
+  agent_api_user: CHANGEME
+  agent_api_password: CHANGEME
+  redis: 127.0.0.1:6379
+
+development:
+  <<: *defaults
+

@@ -1,0 +1,17 @@
+%h1
+  Cloud Configuration Settings
+
+%table.cloud_config
+  %tr
+    %th
+      Setting
+    %th
+      Value
+  - ConfigSetting.find(:all).sort_by{|x| x.name}.each do |setting|
+    %tr
+      %th
+        = setting.name
+      %td.setting
+        = form_for setting, :url => cloudconfig_path(setting), :method => 'PUT' do |f|
+          = f.text_field :value
+          = f.submit

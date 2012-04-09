@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+PRODUCT=hs-cloudcontroller
+PRODUCT_ROOT=usr/lib/hs/cloudcontroller
+DEB_ROOT=$(CURDIR)/debian/
+DESTPATH=$(DEB_ROOT)$(PRODUCT)/$(PRODUCT_ROOT)
+SHARED_CONFIG=$(CURDIR)/debian/hs-config/etc/hs/shared
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+override_dh_clean:
+	dh_testdir
+	rm -rf bundled .bundle debian/$(PRODUCT) tmp test/reports
+	dh_auto_clean
+	dh_clean
+
+prepare_product:
+	/var/lib/gems/1.9.1/bin/bundle install --path=bundled --binstubs
+
+run_test: prepare_product
+# prepare test setups
+	cp config/database.yml.test config/database.yml
+	cp config/hs.yml.template config/hs.yml
+	RAILS_ENV=development /var/lib/gems/1.9.1/bin/bundle exec rake ciprep
+	RAILS_ENV=test /var/lib/gems/1.9.1/bin/bundle exec rake ciprep
+	RAILS_ENV=development /var/lib/gems/1.9.1/bin/bundle exec rake cirun || true
+
+override_dh_auto_install: prepare_product run_test
+# product files
+	install -d $(DESTPATH)
+	rsync -r --exclude=/test/ --exclude=/debian/ --exclude=/log/ --exclude=/.git* ./ $(DESTPATH)/
+# remove useless files
+	rm $(DESTPATH)/config/environments/development.rb
+	rm $(DESTPATH)/config/environments/test.rb
+	rm $(DESTPATH)/config/hs*
+	rm $(DESTPATH)/config/database.yml
+	rm $(DESTPATH)/config/*.test
+# dbconfig template
+	install -m 0600 debian/database.yml.template $(DESTPATH)/config/database.yml.template
+# nginx site
+	install -d $(CURDIR)/debian/$(PRODUCT)/etc/nginx/sites-available
+	install -m 0644 debian/nginx-site $(CURDIR)/debian/$(PRODUCT)/etc/nginx/sites-available/$(PRODUCT)-site
+# SHARED
+	install -d $(SHARED_CONFIG)
+	install -m 0644 debian/hs.yml $(SHARED_CONFIG)/
+
+%:
+	dh $@
+

@@ -1,0 +1,23 @@
+test:
+  adapter: postgresql
+  database: test_hs_cc_test
+  username: buildtest
+  password: buildtest
+  host: localhost
+  port: 5433
+
+production:
+  adapter: postgresql
+  database: test_hs_cc_prod
+  username: buildtest
+  password: buildtest
+  host: localhost
+  port: 5433
+
+development:
+  adapter: postgresql
+  database: test_hs_cc_dev
+  username: buildtest
+  password: buildtest
+  host: localhost
+  port: 5433

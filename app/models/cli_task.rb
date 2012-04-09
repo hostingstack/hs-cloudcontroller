@@ -1,0 +1,2 @@
+class CliTask < Task
+end

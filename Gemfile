@@ -13,6 +13,8 @@ gem 'haddock'
 gem 'net-dns'
 gem 'uuid'
 
+gem 'SyslogLogger', :require => "syslog_logger"
+
 # Route, ActiveSupport and JSON don't play well together, so use YAJL instead.
 gem 'yajl-ruby', :require => 'yajl'
 

@@ -1,3 +1,5 @@
 var/log/hs-cloudcontroller
+var/lib/hs
+var/lib/hs/cloudcontroller
 var/lib/hs/cloudcontroller/run
 etc/hs/cloudcontroller

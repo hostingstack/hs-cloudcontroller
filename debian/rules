@@ -32,7 +32,7 @@ run_test: prepare_product
 override_dh_auto_install: prepare_product run_test
 # product files
 	install -d $(DESTPATH)
-	rsync -r --exclude=/test/ --exclude=/debian/ --exclude=/log/ --exclude=/.git* ./ $(DESTPATH)/
+	rsync -r --exclude=/test/ --exclude=/debian/ --exclude=/log/ --exclude=/.git/ ./ $(DESTPATH)/
 # remove useless files
 	rm $(DESTPATH)/config/environments/development.rb
 	rm $(DESTPATH)/config/environments/test.rb

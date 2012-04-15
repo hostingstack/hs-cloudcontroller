@@ -1,16 +1,20 @@
-ConfigSetting.create :name => "cloud.domain.name", :value => "srv.io"
-ConfigSetting.create :name => "cloud.name", :value => "srv.io"
-ConfigSetting.create :name => "cloud.email.sender", :value => "srv.io <hello@srv.io>"
-ConfigSetting.create :name => "cloud.email.support", :value => "hello@srv.io"
-ConfigSetting.create :name => "apps.route.builtintemplate", :value => "%s.solidrails.net"
-ConfigSetting.create :name => "apps.route.builtintemplate.staging", :value => "test.%s.solidrails.net"
-ConfigSetting.create :name => "apps.ssh.gateway.host", :value => "ssh.solidrails.net -p 2200"
+hostname = `hostname -f 2> /dev/null`
+hostname = `hostname` if hostname.blank?
+hostname.strip!
+
+ConfigSetting.create :name => "cloud.domain.name", :value => hostname
+ConfigSetting.create :name => "cloud.name", :value => hostname
+ConfigSetting.create :name => "cloud.email.sender", :value => "HostingStack <root@#{hostname}>"
+ConfigSetting.create :name => "cloud.email.support", :value => "root@{hostname}"
+ConfigSetting.create :name => "apps.route.builtintemplate", :value => "%s.#{hostname}"
+ConfigSetting.create :name => "apps.route.builtintemplate.staging", :value => "test.%s.#{hostname}"
+ConfigSetting.create :name => "apps.ssh.gateway.host", :value => "ssh.#{hostname} -p 2200"
 ConfigSetting.create :name => "apps.ssh.usernametemplate.staging", :value => "test-%s"
-ConfigSetting.create :name => "cloud.branding.logo", :value => "url('/images/logo_controlpanel.png')"
-ConfigSetting.create :name => "cloud.branding.colors.highlight", :value => "#893737"
+ConfigSetting.create :name => "cloud.branding.logo", :value => "url('/images/logo_controlpanel_hostingstack.png')"
+ConfigSetting.create :name => "cloud.branding.colors.highlight", :value => "#2B679A"
 ConfigSetting.create :name => "cloud.branding.colors.background", :value => "white"
 ConfigSetting.create :name => "cloud.branding.colors.foreground", :value => "black"
-ConfigSetting.create :name => "cloud.branding.colors.action", :value => "#64A73A"
+ConfigSetting.create :name => "cloud.branding.colors.action", :value => "#2B679A"
 ConfigSetting.create :name => "cloud.branding.colors.button_background", :value => "#EBFFEB"
 ConfigSetting.create :name => "apps.name.words", :value => [
   ['blazing', 'normal', 'abrupt', 'animated', 'beautiful', 'better', 'brief', 'bright', 'blooming', 'chilly', 'cloudy', 'cool', 'deep',
